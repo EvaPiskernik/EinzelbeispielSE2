@@ -2,6 +2,7 @@ package com.example.einzelbeispiel;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -25,8 +26,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((TextView)  ( findViewById(R.id.serverAnswer_Tv))).setText("123");
+                String textStudentNr = ((EditText)(findViewById(R.id.editTextNumber))).getText().toString();
+                Connection connection = new Connection(textStudentNr);
+                connection.start();
+                try {
+                    connection.join();
+                    ((TextView)findViewById(R.id.serverAnswer_Tv)).setText(connection.getServerMsg());
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
         });
+
     }
+
+
 }
